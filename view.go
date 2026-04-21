@@ -109,7 +109,9 @@ func (m *editorModel) renderContent() string {
 		lineNum := i + m.viewport.YOffset + 1
 		rowIdx := lineNum - 1
 
-		sb.WriteString(m.renderLineNumber(lineNum, rowIdx))
+		if !m.hideLineNumbers {
+			sb.WriteString(m.renderLineNumber(lineNum, rowIdx))
+		}
 
 		if rowIdx >= m.buffer.lineCount() {
 			sb.WriteString("\n")

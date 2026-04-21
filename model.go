@@ -96,6 +96,7 @@ type editorModel struct {
 	countPrefix int // Numeric prefix for commands like "10j"
 
 	relativeNumbers bool // Whether to show relative line numbers
+	hideLineNumbers bool // Whether to hide the line-number gutter entirely
 
 	viewport        viewport.Model // For scrolling
 	width           int            // Window width
@@ -138,6 +139,7 @@ type options struct {
 	SelectedStyle          lipgloss.Style // Style for selected text
 	FileName               string         // Filename for syntax highlighting
 	RelativeNumbers        bool           // Whether to show relative line numbers
+	HideLineNumbers        bool           // Whether to hide the line-number gutter entirely
 	FullScreen             bool           // Whether to use the full terminal screen
 }
 
@@ -161,6 +163,7 @@ func NewEditor(opts ...EditorOption) Editor {
 		SelectedStyle:          selectedStyle,
 		FileName:               "",
 		RelativeNumbers:        false,
+		HideLineNumbers:        false,
 		FullScreen:             false,
 	}
 
@@ -191,6 +194,7 @@ func NewEditor(opts ...EditorOption) Editor {
 		commandStyle:           options.CommandStyle,
 		selectedStyle:          options.SelectedStyle,
 		relativeNumbers:        options.RelativeNumbers,
+		hideLineNumbers:        options.HideLineNumbers,
 		countPrefix:            1,
 
 		highlighter:    newSyntaxHighlighter(options.DefaultSyntaxTheme, options.FileName),
@@ -692,6 +696,15 @@ func WithFileName(fileName string) EditorOption {
 func WithRelativeNumbers(enable bool) EditorOption {
 	return func(o *options) {
 		o.RelativeNumbers = enable
+	}
+}
+
+// WithHideLineNumbers hides the entire line-number gutter. Useful when the
+// editor is embedded as a lightweight single/multi-line input widget where
+// the gutter would look out of place.
+func WithHideLineNumbers() EditorOption {
+	return func(o *options) {
+		o.HideLineNumbers = true
 	}
 }
 
