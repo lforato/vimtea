@@ -179,7 +179,7 @@ func (m *editorModel) renderCursor(char string) string {
 
 	switch m.mode {
 	case ModeInsert:
-		return lipgloss.NewStyle().Underline(true).Render(char)
+		return lipgloss.NewStyle().Bold(true).Render("|") + char
 	case ModeCommand:
 		return char
 	default:
